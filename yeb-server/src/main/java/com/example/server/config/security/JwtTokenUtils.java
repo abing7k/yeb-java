@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
  * @USER: 韩冰
  * @DATE: 2022/7/27 0027 17:25
  */
+@Component
 public class JwtTokenUtils {
 
     private static final String CLAIM_KEY_USERNAME = "sub";
