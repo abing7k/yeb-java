@@ -6,9 +6,9 @@ spring:
   # 数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/yeb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    url: jdbc:mysql://local.mysql.com:3306/yeb-back?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: yeb-back
+    password: root
     hikari:
       # 连接池名
       pool-name: DateHikariCP
@@ -43,11 +43,11 @@ logging:
     com.example.server.mapper: debug
 
 #jwt:
-#  # JWT存储的请求头
-#  tokenHeader: Authorization
-#  # JWT 加解密使用的密钥
-#  secret: yeb-secret
-#  # JWT的超期限时间（60*60*24）
-#  expiration: 604800
-#  # JWT 负载中拿到开头
-#  tokenHead: Bearer
+  # JWT存储的请求头
+  tokenHeader: Authorization
+  # JWT 加解密使用的密钥
+  secret: yeb-secret
+  # JWT的超期限时间（60*60*24）
+  expiration: 604800
+  # JWT 负载中拿到开头
+  tokenHead: Bearer
