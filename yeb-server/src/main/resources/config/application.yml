@@ -3,10 +3,13 @@ server:
   port: 8081
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   # 数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://local.mysql.com:3306/yeb-back?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://local.mysql.com:3306/yeb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: yeb
     password: root
     hikari:
@@ -26,6 +29,7 @@ spring:
       connection-timeout: 30000
       # 测试连接是否可用的查询语句
       connection-test-query: SELECT 1
+
 
 # Mybatis-plus配置
 mybatis-plus:
@@ -54,6 +58,3 @@ jwt:
 
 
 
-mvc:
-  pathmatch:
-    matching-strategy: ant_path_matcher

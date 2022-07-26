@@ -21,7 +21,4 @@ public class AdminLoginParam {
     private String username;
     @ApiModelProperty(value = "密码",required = true)
     private String password;
-
-
-
 }

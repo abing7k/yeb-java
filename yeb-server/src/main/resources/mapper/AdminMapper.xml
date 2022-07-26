@@ -21,4 +21,10 @@
         id, name, phone, telephone, address, enabled, username, password, userFace, remark
     </sql>
 
+    <select id="getAdminByUserName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_admin where username = #{username}
+    </select>
+
 </mapper>
