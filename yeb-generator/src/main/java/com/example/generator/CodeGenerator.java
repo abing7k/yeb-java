@@ -72,7 +72,7 @@ public class CodeGenerator {
         dsc.setUrl("jdbc:mysql://local.mysql.com:3306/yeb-back?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia" +
                 "/Shanghai");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("yeb-back");
+        dsc.setUsername("yeb");
         dsc.setPassword("root");
         mpg.setDataSource(dsc);
 
