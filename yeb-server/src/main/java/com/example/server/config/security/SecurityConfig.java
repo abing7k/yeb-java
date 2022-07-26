@@ -2,7 +2,7 @@ package com.example.server.config.security;
 
 import com.example.server.mapper.AdminMapper;
 import com.example.server.pojo.Admin;
-//import com.example.server.service.IAdminService;
+//import com.example.server.service.IAdminService; //这个会导致循环注入
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/doc.html",
                 "/webjars/**",
                 "/swagger-resources/**",
-                "/v2/api-docs/**"
+                "/v2/api-docs/**",
+                "/captcha"
         );
     }
 
