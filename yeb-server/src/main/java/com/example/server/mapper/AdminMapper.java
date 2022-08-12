@@ -1,7 +1,10 @@
 package com.example.server.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.server.pojo.Admin;
+import com.example.server.pojo.Menu;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AdminMapper extends BaseMapper<Admin> {
     Admin getAdminByUserName(String username);
+
 }

@@ -21,4 +21,9 @@
         id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
     </sql>
 
+
+    <select id="getMenusByAdminId" resultType="com.example.server.pojo.Menu">
+
+    </select>
+
 </mapper>
