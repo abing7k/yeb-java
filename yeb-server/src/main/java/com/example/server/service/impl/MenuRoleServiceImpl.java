@@ -27,27 +27,4 @@ import java.util.List;
 @Service
 public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> implements IMenuRoleService {
 
-    @Autowired
-    private MenuMapper menuMapper;
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-    /**
-     * 根据用户id查询菜单列表
-     *
-     * @return
-     */
-    @Override
-    public List<Menu> getMenusByAdminId() {
-        Integer adminId = ((Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        //从redis中获取数据
-        List<Menu> menus = (List<Menu>) valueOperations.get("menu_" + adminId);
-        //如果为空,从数据库中获取
-        if (CollectionUtils.isEmpty(menus)){
-            menus = menuMapper.getMenusByAdminId(adminId);
-            valueOperations.set("menu_" + adminId,menus);
-        }
-        return menus;
-    }
 }
