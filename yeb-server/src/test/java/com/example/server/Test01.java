@@ -32,7 +32,7 @@ public class Test01 {
     }
 
     @Test
-    public void MD5() throws{
+    public void MD5() {
         System.out.println(DigestUtils.md5DigestAsHex("123456".getBytes()));
     }
 

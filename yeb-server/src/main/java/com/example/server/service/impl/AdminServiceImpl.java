@@ -2,10 +2,12 @@ package com.example.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.server.config.security.JwtTokenUtils;
+import com.example.server.config.security.component.JwtTokenUtils;
 import com.example.server.mapper.AdminMapper;
+import com.example.server.mapper.RoleMapper;
 import com.example.server.pojo.Admin;
 import com.example.server.pojo.RespBean;
+import com.example.server.pojo.Role;
 import com.example.server.service.IAdminRoleService;
 import com.example.server.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +47,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private IAdminRoleService adminRoleService;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
+    @Autowired
+    private RoleMapper roleMapper;
 
 
     /**
@@ -96,5 +101,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return adminMapper.selectOne(new QueryWrapper<Admin>()
                 .eq("username", username)
                 .eq("enabled", true));
+    }
+
+
+    /**
+     * 根据用户id查询角色列表
+     * @param adminId
+     * @return
+     */
+    @Override
+    public List<Role> getRolesById(Integer adminId) {
+        return roleMapper.getRolesById(adminId);
     }
 }

@@ -1,19 +1,24 @@
 package com.example.server.config.security;
 
+import com.example.server.config.security.component.*;
 import com.example.server.mapper.AdminMapper;
+import com.example.server.mapper.RoleMapper;
 import com.example.server.pojo.Admin;
 //import com.example.server.service.IAdminService; //这个会导致循环注入
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -31,14 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     @Autowired
     private RestAuthorizationEntryPoint restAuthorizationEntryPoint;
+    @Autowired
+    private CustomFilter customFilter;
+    @Autowired
+    private CustomUrlDecisionManager customUrlDecisionManager;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web){
         web.ignoring().antMatchers(
                 "/login",
                 "/logout",
@@ -56,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        System.err.println("SecurityConfig configure");
         //使用JWT,不需要csrf
         http.csrf()
                 .disable()
@@ -63,10 +70,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeHttpRequests()
+                .authorizeRequests()
                 //所有请求都需要验证
                 .anyRequest()
                 .authenticated()
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O object) {
+                        object.setAccessDecisionManager(customUrlDecisionManager);
+                        object.setSecurityMetadataSource(customFilter);
+//                        System.err.println("SecurityConfig postProcess");
+                        return object;
+                    }
+                })
                 .and()
                 //禁用缓存
                 .headers()
@@ -81,15 +97,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
             //这里按照教学视频会报循环注入的错,所以不能用IAdminService,只能用AdminMapper来查询
             Admin admin = adminMapper.getAdminByUserName(username);
             if (admin != null) {
+                admin.setRoles(roleMapper.getRolesById(admin.getId()));
                 return admin;
             }
-            return null;
+            throw new UsernameNotFoundException("用户或密码不正确");
         };
     }
 

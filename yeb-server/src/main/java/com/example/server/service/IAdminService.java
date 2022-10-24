@@ -1,10 +1,14 @@
 package com.example.server.service;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.server.pojo.Admin;
 import com.example.server.pojo.RespBean;
+import com.example.server.pojo.Role;
+import io.swagger.models.auth.In;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -31,5 +35,12 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     Admin getAdminByUserName(String username);
+
+    /**
+     * 根据用户id查询角色列表
+     * @param adminId
+     * @return
+     */
+    List<Role> getRolesById(Integer adminId);
 
 }

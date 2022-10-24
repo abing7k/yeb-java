@@ -4,14 +4,26 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.example.server.pojo.Role">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="nameZh" property="nameZh" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="nameZh" property="nameZh"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, nameZh
+        id
+        , name, nameZh
     </sql>
+
+    <!--此处和原视频不一样,我只会这种低级的sql-->
+    <select id="getRolesById" resultType="com.example.server.pojo.Role">
+        SELECT r.*
+        FROM t_admin a,
+             t_admin_role ar,
+             t_role r
+        WHERE a.id = ar.adminId
+          AND ar.rid = r.id
+          AND a.id = #{admainId}
+    </select>
 
 </mapper>

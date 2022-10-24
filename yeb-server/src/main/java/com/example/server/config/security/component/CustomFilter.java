@@ -1,4 +1,4 @@
-package com.example.server.config;
+package com.example.server.config.security.component;
 
 import com.example.server.pojo.Menu;
 import com.example.server.pojo.Role;
@@ -8,8 +8,10 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import java.util.List;
  * @USER: 韩冰
  * @DATE: 2022/10/21 0021 22:15
  */
+@Component
 public class CustomFilter implements FilterInvocationSecurityMetadataSource {
     @Autowired
     private IMenuService menuService;
@@ -29,8 +32,8 @@ public class CustomFilter implements FilterInvocationSecurityMetadataSource {
         //获取请求url
         String requestUrl = ((FilterInvocation) object).getRequestUrl();
         //获取菜单
-        List<Menu> menusWithRole = menuService.getMenusWithRole();
-        for (Menu menu : menusWithRole) {
+        List<Menu> menus = menuService.getMenusWithRole();
+        for (Menu menu : menus) {
             if (antPathMatcher.match(menu.getUrl(),requestUrl)){
                 String[] strings = menu.getRoles().stream().map(Role::getName).toArray(String[]::new);
                 return SecurityConfig.createList(strings);
