@@ -1,42 +1,40 @@
 package com.example.server.controller;
 
-
-import com.example.server.pojo.Joblevel;
+import com.example.server.pojo.Role;
 import com.example.server.pojo.RespBean;
-import com.example.server.service.IJoblevelService;
+import com.example.server.service.IRoleService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author hanbing
- * @since 2022-07-27
+ * @PROJECT_NAME: yeb-java
+ * @DESCRIPTION:
+ * @USER: 韩冰
+ * @DATE: 2022/10/24 0024 21:47
  */
 @RestController
-@RequestMapping("/system/basic/joblevel")
-public class JoblevelController {
+@RequestMapping("/system/basic/pos")
+public class PermissionController {
     @Autowired
-    public IJoblevelService joblevelService;
+    public IRoleService roleService;
 
     @ApiOperation(value = "获取职位信息")
-    @GetMapping("/")
-    public List<Joblevel> getAllPostion() {
-        return joblevelService.list();
+    @GetMapping("/getAllRole")
+    public List<Role> getAllRole() {
+        return roleService.list();
     }
 
     @ApiOperation(value = "添加职位信息")
-    @PostMapping("/addJoblevel")
-    public RespBean addJoblevel(@RequestBody Joblevel Joblevel) {
-        Joblevel.setCreateDate(LocalDateTime.now());
-        if (joblevelService.save(Joblevel)) {
+    @PostMapping("/addRole")
+    public RespBean addRole(@RequestBody Role role) {
+        if (!role.getName().startsWith("ROLE_")) {
+            role.setName("ROLE_"+role.getName());
+        }
+        if (roleService.save(role)) {
             return RespBean.success("添加成功");
         } else {
             return RespBean.error("添加失败");
@@ -44,9 +42,9 @@ public class JoblevelController {
     }
 
     @ApiOperation(value = "修改职位信息")
-    @PostMapping("/updateJoblevel")
-    public RespBean updateJoblevel(@RequestBody Joblevel Joblevel) {
-        if (joblevelService.updateById(Joblevel)) {
+    @PostMapping("/updateRole")
+    public RespBean updateRole(@RequestBody Role role) {
+        if (roleService.updateById(role)) {
             return RespBean.success("修改成功");
         } else {
             return RespBean.error("修改失败");
@@ -54,9 +52,9 @@ public class JoblevelController {
     }
 
     @ApiOperation(value = "删除职位信息")
-    @DeleteMapping("deleteJoblevelById/{id}")
-    public RespBean deleteJoblevelById(@PathVariable Integer id) {
-        if (joblevelService.removeById(id)) {
+    @DeleteMapping("deleteRoleById/{id}")
+    public RespBean deleteRoleById(@PathVariable Integer id) {
+        if (roleService.removeById(id)) {
             return RespBean.success("删除成功");
         } else {
             return RespBean.error("删除失败");
@@ -64,13 +62,12 @@ public class JoblevelController {
     }
 
     @ApiOperation(value = "批量删除职位信息")
-    @DeleteMapping("/deleteJoblevelByIds")
-    public RespBean deleteJoblevelByIds(Integer[] ids) {
-        if (joblevelService.removeByIds(Arrays.asList(ids))) {
+    @DeleteMapping("/deleteRoleByIds")
+    public RespBean deleteRoleByIds(Integer[] ids) {
+        if (roleService.removeByIds(Arrays.asList(ids))) {
             return RespBean.success("删除成功");
         } else {
             return RespBean.error("删除失败");
         }
     }
-
 }

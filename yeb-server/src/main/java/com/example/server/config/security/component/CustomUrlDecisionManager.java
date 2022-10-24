@@ -24,11 +24,12 @@ public class CustomUrlDecisionManager implements AccessDecisionManager {
         //当前url所需要的角色
         for (ConfigAttribute configAttribute : configAttributes) {
             String needRole = configAttribute.getAttribute();
-//            System.err.println("needRole: "+needRole);
+            System.err.println("needRole: "+needRole);
             //判断角色是否登录即可访问的角色,此角色在CustomFilter中设置
             if ("ROLE_LOGIN".equals(needRole)){
                 //判断是否登录
-                if (authentication instanceof AbstractAuthenticationToken){
+                //这里我觉得视频出错了,需要取反
+                if (!(authentication instanceof AbstractAuthenticationToken)){
                     throw new AccessDeniedException("尚未登录,请登录");
                 }else {
                     return;
@@ -38,7 +39,7 @@ public class CustomUrlDecisionManager implements AccessDecisionManager {
             //判断用户角色是否为url所需的角色
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {
-//                System.err.println("authority: "+authority);
+               System.err.println("authority: "+authority);
                 //authority.toString()也可以
                 if (authority.getAuthority().equals(needRole)) {
                     return;
