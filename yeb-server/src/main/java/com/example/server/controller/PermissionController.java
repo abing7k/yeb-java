@@ -97,4 +97,12 @@ public class PermissionController {
                 .map(MenuRole::getMid)
                 .collect(Collectors.toList());
     }
+
+    @ApiOperation(value = "更新角色列表")
+    @PostMapping("/updateMenuRole")
+    public RespBean updateMenuRole(Integer rid,Integer[] mids){
+        return menuRoleService.updateMenuRole(rid,mids);
+    }
+
+
 }
