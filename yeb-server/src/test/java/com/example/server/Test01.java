@@ -4,11 +4,16 @@ import com.example.server.pojo.Menu;
 import com.example.server.pojo.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.DigestUtils;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -54,5 +59,14 @@ public class Test01 {
             str = menu.getRoles().stream().map(Role::getName).toArray(String[]::new);
         }
         System.out.println(str);
+    }
+
+    @Test
+    public void test03(){
+        AbstractAuthenticationToken abstractAuthenticationToken = null;
+        System.out.println((abstractAuthenticationToken instanceof CredentialsContainer));
+        System.out.println((abstractAuthenticationToken instanceof Authentication));
+        System.out.println(abstractAuthenticationToken.getClass());
+
     }
 }
