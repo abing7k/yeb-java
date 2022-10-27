@@ -37,4 +37,10 @@ public class DepartmentController {
         return departmentService.addDep(department);
     }
 
+    @ApiOperation(value = "删除部门")
+    @DeleteMapping("deleteDep/{id}")
+    public RespBean deleteDep(@PathVariable Integer id){
+        return departmentService.deleteDep(id);
+    }
+
 }
