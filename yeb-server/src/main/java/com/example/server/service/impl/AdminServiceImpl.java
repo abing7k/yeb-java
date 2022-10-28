@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.server.Utils.AdminUtils;
 import com.example.server.Utils.JwtTokenUtils;
 import com.example.server.mapper.AdminMapper;
+import com.example.server.mapper.AdminRoleMapper;
 import com.example.server.mapper.RoleMapper;
 import com.example.server.pojo.Admin;
+import com.example.server.pojo.AdminRole;
 import com.example.server.pojo.RespBean;
 import com.example.server.pojo.Role;
 import com.example.server.service.IAdminRoleService;
@@ -19,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +53,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private String tokenHead;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    AdminRoleMapper adminRoleMapper;
 
 
     /**
@@ -118,5 +123,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public List<Admin> getAllAdmin(String keywords) {
         return adminMapper.getAllAdmin(AdminUtils.getCurrentAdmin().getId(),keywords);
+    }
+
+    /**
+     * 更新操作员角色
+     * @param adminId
+     * @param rids
+     * @return
+     */
+    @Override
+    @Transactional
+    public RespBean updateAdminRole(Integer adminId, Integer[] rids) {
+        adminRoleMapper.delete(new QueryWrapper<AdminRole>().eq("adminId",adminId));
+        Integer result = adminRoleMapper.addRole(adminId, rids);
+        if (rids.length == result){
+            return RespBean.success("更新成功");
+        }
+        return RespBean.error("更新失败");
     }
 }

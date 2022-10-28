@@ -6,6 +6,7 @@ import com.example.server.pojo.Admin;
 import com.example.server.pojo.RespBean;
 import com.example.server.pojo.Role;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -49,4 +50,12 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     List<Admin> getAllAdmin(String keywords);
+
+    /**
+     * 更新操作员角色
+     * @param adminId
+     * @param rids
+     * @return
+     */
+    RespBean updateAdminRole(@Param("adminId") Integer adminId, @Param("rids") Integer[] rids);
 }
