@@ -56,7 +56,7 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/yeb-generator/src/main/java");
         //作者
-        gc.setAuthor("hanbing");
+        gc.setAuthor("abing7k");
         //打开输出目录
         gc.setOpen(false);
         //xml开启 BaseResultMap
@@ -69,11 +69,10 @@ public class CodeGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://local.mysql.com:3306/yeb-back?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia" +
-                "/Shanghai");
+        dsc.setUrl("jdbc:mysql://47.122.118.117:3306/paper_order_system?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("yeb");
-        dsc.setPassword("root");
+        dsc.setUsername("paper_order_system");
+        dsc.setPassword("xeD2WyK2w6XNKZbW");
         mpg.setDataSource(dsc);
 
         // 包配置
@@ -132,7 +131,7 @@ public class CodeGenerator {
         strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
         strategy.setControllerMappingHyphenStyle(true);
         //表前缀
-        strategy.setTablePrefix("t_");
+//        strategy.setTablePrefix("t_");
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
